@@ -1,0 +1,512 @@
+COG_subcl <- COG_subcl[cmon3,]
+clust<-clust[cmon3,]
+clust$Class <- COG_subcl$MMSE_subclass
+clust1<- clust[complete.cases(clust$Class),]
+set.seed(55); summary(multitest(data=clust1,dependent = "Class",problem = "classification",method = "randomForest",name = "MMSE_MLtesting", preserve_distribution=TRUE, iterations=10,cross_validation=TRUE))
+clust1 <- clust1[,c(1,4)]
+set.seed(55); summary(multitest(data=clust1,dependent = "Class",problem = "classification",method = "randomForest",name = "MMSE_MLtesting", preserve_distribution=TRUE, iterations=10,cross_validation=TRUE))
+summary(multitest(data=clust1,dependent = "Class",problem = "classification",method = "randomForest",name = "MMSE_MLtesting", preserve_distribution=TRUE, iterations=10,cross_validation=TRUE))
+summary(multitest(data=clust1,dependent = "Class",problem = "classification",method = "randomForest",name = "MMSE_MLtesting"))
+set.seed(55)
+inTrain3 <- createDataPartition(y=clust1$Class,p=.80,list=F)
+training3 <-clust1[ inTrain3,]
+testing3 <-clust1[ -inTrain3,]
+ctrl <- trainControl(method="repeatedcv",repeats = 3,classProbs = T)
+plsFit <- train(Class ~ ., data=training3, trControl=ctrl,metric="ROC")
+plsFit
+warnings()
+plsClasses<-predict(plsFit,newdata=testing3)
+confusionMatrix(data=plsClasses,testing3$Class)
+library(ape)
+y10 <- extract.clade(imp20tr, "y10")
+rm(y10)
+y48 <- extract.clade(imp20tr, "y48")
+y48<-y48$tip.label
+mean(totuImp[,1])
+range(totuImp[,1])
+library(caret)
+cmon2 <- intersect(colnames(totuImp), y48)
+y48CLR <- totuImp[,cmon2]
+cmon <- intersect(rownames(y48CLR), rownames(hoci))
+y48CLR <- y48CLR[cmon,]
+hoci<-hoci[cmon,]
+y48CLR$Class <- hoci$scAge
+y48CLR <- y48CLR[complete.cases(y48CLR$Class),]
+set.seed(55)
+inTrain3 <- createDataPartition(y=y48CLR$Class,p=.80,list=F)
+training3 <-y48CLR[ inTrain3,]
+testing3 <-y48CLR[ -inTrain3,]
+ctrl <- trainControl(method="repeatedcv",repeats = 3)
+plsFit <- train(Class ~ ., data=training3, trControl=ctrl)
+plsClasses <- predict(plsFit, newdata = testing3)
+combo <- data.frame(testing3$Class, plsClasses)
+colnames(combo)<- c("Class","predClass")
+combo$absDiff <- abs(combo$Class - combo$predClass)
+mean(combo$absDiff)
+sd(combo$Class)
+combo$Diff <- (combo$Class - combo$predClass)
+sqrt(mean(combo$Diff*combo$Diff))
+cmon2 <- intersect(colnames(totuImp), y15)
+y48CLR <- totuImp[,cmon2]
+cmon <- intersect(rownames(y48CLR), rownames(hoci))
+y48CLR <- y48CLR[cmon,]
+hoci<-hoci[cmon,]
+y48CLR$Class <- hoci$scAge
+y48CLR <- y48CLR[complete.cases(y48CLR$Class),]
+set.seed(55)
+inTrain3 <- createDataPartition(y=y48CLR$Class,p=.80,list=F)
+training3 <-y48CLR[ inTrain3,]
+testing3 <-y48CLR[ -inTrain3,]
+ctrl <- trainControl(method="repeatedcv",repeats = 3)
+plsFit <- train(Class ~ ., data=training3, trControl=ctrl)
+y15 <- extract.clade(imp20tr, "y15")
+y15<-y15$tip.label
+cmon2 <- intersect(colnames(totuImp), y15)
+y48CLR <- totuImp[,cmon2]
+cmon <- intersect(rownames(y48CLR), rownames(hoci))
+y48CLR <- y48CLR[cmon,]
+hoci<-hoci[cmon,]
+y48CLR$Class <- hoci$scAge
+y48CLR <- y48CLR[complete.cases(y48CLR$Class),]
+set.seed(55)
+inTrain3 <- createDataPartition(y=y48CLR$Class,p=.80,list=F)
+training3 <-y48CLR[ inTrain3,]
+testing3 <-y48CLR[ -inTrain3,]
+ctrl <- trainControl(method="repeatedcv",repeats = 3)
+plsFit <- train(Class ~ ., data=training3, trControl=ctrl)
+plsClasses <- predict(plsFit, newdata = testing3)
+combo <- data.frame(testing3$Class, plsClasses)
+colnames(combo)<- c("Class","predClass")
+combo$absDiff <- abs(combo$Class - combo$predClass)
+mean(combo$absDiff)
+sd(combo$Class)
+combo$Diff <- (combo$Class - combo$predClass)
+sqrt(mean(combo$Diff*combo$Diff))
+cmon2 <- intersect(colnames(totuImp), y13)
+y48CLR <- totuImp[,cmon2]
+cmon <- intersect(rownames(y48CLR), rownames(hoci))
+y48CLR <- y48CLR[cmon,]
+hoci<-hoci[cmon,]
+y48CLR$Class <- hoci$scAge
+y48CLR <- y48CLR[complete.cases(y48CLR$Class),]
+set.seed(55)
+inTrain3 <- createDataPartition(y=y48CLR$Class,p=.80,list=F)
+training3 <-y48CLR[ inTrain3,]
+testing3 <-y48CLR[ -inTrain3,]
+ctrl <- trainControl(method="repeatedcv",repeats = 3)
+plsFit <- train(Class ~ ., data=training3, trControl=ctrl)
+y13 <- extract.clade(imp20tr, "y13")
+y13<-y13$tip.label
+cmon2 <- intersect(colnames(totuImp), y13)
+y48CLR <- totuImp[,cmon2]
+cmon <- intersect(rownames(y48CLR), rownames(hoci))
+y48CLR <- y48CLR[cmon,]
+hoci<-hoci[cmon,]
+y48CLR$Class <- hoci$scAge
+y48CLR <- y48CLR[complete.cases(y48CLR$Class),]
+set.seed(55)
+inTrain3 <- createDataPartition(y=y48CLR$Class,p=.80,list=F)
+training3 <-y48CLR[ inTrain3,]
+testing3 <-y48CLR[ -inTrain3,]
+ctrl <- trainControl(method="repeatedcv",repeats = 3)
+plsFit <- train(Class ~ ., data=training3, trControl=ctrl)
+plsClasses <- predict(plsFit, newdata = testing3)
+combo <- data.frame(testing3$Class, plsClasses)
+colnames(combo)<- c("Class","predClass")
+combo$absDiff <- abs(combo$Class - combo$predClass)
+mean(combo$absDiff)
+sd(combo$Class)
+combo$Diff <- (combo$Class - combo$predClass)
+sqrt(mean(combo$Diff*combo$Diff))
+clust <- read_biom("/Users/macuser/Downloads/sums/feature-table.biom")
+clust <- as.matrix(biom_data(clust))
+clust <- t(clust)
+clust <- data.frame(clust)
+library(biomformat)
+clust <- read_biom("/Users/macuser/Downloads/sums/feature-table.biom")
+clust <- as.matrix(biom_data(clust))
+clust <- t(clust)
+clust <- data.frame(clust)
+cmon <- intersect(rownames(clust), rownames(hoci))
+y48CLR <- clust[cmon,]
+hoci<-hoci[cmon,]
+y48CLR$Class <- hoci$scAge
+y48CLR <- y48CLR[complete.cases(y48CLR$Class),]
+set.seed(159)
+inTrain3 <- createDataPartition(y=y48CLR$Class,p=.80,list=F)
+training3 <-y48CLR[ inTrain3,]
+testing3 <-y48CLR[ -inTrain3,]
+ctrl <- trainControl(method="repeatedcv",repeats = 3)
+plsFit <- train(Class ~ ., data=training3, trControl=ctrl)
+plsClasses <- predict(plsFit, newdata = testing3)
+combo <- data.frame(testing3$Class, plsClasses)
+colnames(combo)<- c("Class","predClass")
+combo$absDiff <- abs(combo$Class - combo$predClass)
+mean(combo$absDiff)
+sd(combo$Class)
+combo$Diff <- (combo$Class - combo$predClass)
+sqrt(mean(combo$Diff*combo$Diff))
+plsFit
+plot(varImp(plsFit))
+cmon <- intersect(rownames(clust), rownames(hoci))
+y48CLR <- clust[cmon,]
+hoci<-hoci[cmon,]
+y48CLR$Class <- hoci$scAge
+y48CLR <- y48CLR[complete.cases(y48CLR$Class),]
+set.seed(159)
+inTrain3 <- createDataPartition(y=y48CLR$Class,p=.80,list=F)
+training3 <-y48CLR[ inTrain3,]
+testing3 <-y48CLR[ -inTrain3,]
+ctrl <- trainControl(method="repeatedcv",repeats = 3)
+plsFit <- train(Class ~ ., data=training3, trControl=ctrl,importance=T)
+plsClasses <- predict(plsFit, newdata = testing3)
+combo <- data.frame(testing3$Class, plsClasses)
+colnames(combo)<- c("Class","predClass")
+combo$absDiff <- abs(combo$Class - combo$predClass)
+mean(combo$absDiff)
+sd(combo$Class)
+combo$Diff <- (combo$Class - combo$predClass)
+sqrt(mean(combo$Diff*combo$Diff))
+plot(varImp(plsFit))
+View(ageASV3)
+View(UtihisASV3)
+range(totuImp[,2342])
+cmon2 <- intersect(colnames(totuImp), y9)
+Cb9 <- totuImp[,cmon2]
+cmon <- intersect(rownames(Cb9), rownames(hoci))
+Cb9 <- Cb9[cmon,]
+hoci<-hoci[cmon,]
+Esc <- totuImp$55cb39edc2f3d2da68fc7b0feff2a4b0
+Esc <- totuImp$55cb39edc2f3d2da68fc7b0feff2a4b0
+Esc <- totuImp$`55cb39edc2f3d2da68fc7b0feff2a4b0`
+Aer <- totuImp$`d9f80f7dd4602677db69a6e14a963f67`
+head(names(Aer),2)
+Aer <- data.frame(Aer)
+View(Aer)
+Esc <- cbind(rownames(totuImp),totuImp$`55cb39edc2f3d2da68fc7b0feff2a4b0` , check.names = F)
+Esc <- data.frame(rownames(totuImp),totuImp$`55cb39edc2f3d2da68fc7b0feff2a4b0` , check.names = F)
+rownames(Esc) <- Esc$`rownames(totuImp)`
+head(names(Esc),2)
+head(rownames(Esc),2)
+Aer <- data.frame(rownames(totuImp), totuImp$`d9f80f7dd4602677db69a6e14a963f67`,check.names = F)
+rownames(Aer) <- Aer$`rownames(totuImp)`
+cmon <- intersect(rownames(Cb9), rownames(Esc))
+Cb9 <- Cb9[cmon,]
+Esc <- Esc[cmon,]
+Cb9$Escherichia_Shigella <- Esc$`totuImp$`55cb39edc2f3d2da68fc7b0feff2a4b0``
+Cb9$Escherichia_Shigella <- Esc$`totuImp$`55cb39edc2f3d2da68fc7b0feff2a4b0``
+colnames(Esc) <- c("rows","ASV")
+colnames(Aer) <- c("rows","ASV")
+Cb9$Escherichia_Shigella <- Esc$ASV
+head(Esc$rows,2)
+cmon <- intersect(rownames(Cb9), rownames(Aer))
+Cb9 <- Cb9[cmon,]
+Aer <- Aer[cmon,]
+Cb9$Aerococcus_urinae <- Aer$ASV
+cmon <- intersect(rownames(Cb9), rownames(hoci))
+Cb9 <- Cb9[cmon,]
+hoci <- hoci[cmon,]
+Cb9$UTI_recurrence <- hoci$uti_bladd_history
+Cb9$UTI_recurrence2 <- hoci$utihis
+View(Cb9)
+boxplot(Cb9$Escherichia_Shigella ~ Cb9$UTI_recurrence)
+boxplot(Cb9$Aerococcus_urinae ~ Cb9$UTI_recurrence)
+Cb9$Cluster_Proportion <- mean(Cb9[,1:4])
+clust_prop <- Cb9[,1:4]
+clust_prop$Cluster_Proportion <- mean(clust_prop)
+clust_prop$Cluster_Proportion <- apply(clust_prop,1,function(x) mean(x))
+mean(Cb9[1,1:4])
+mean(clust_prop[1,])
+head(clust_prop$Cluster_Proportion,2)
+head(Cb9[1,1:4],3)
+head(clust_prop[1,1:4],3)
+clust_prop <- Cb9[,1:4]
+clust_prop$Cluster_Proportion <- apply(as.numeric(clust_prop),1,function(x) mean(x))
+clust_prop$Cluster_Proportion <- apply(clust_prop,1,function(x) mean(as.numeric(x)))
+head(clust_prop$Cluster_Proportion,2)
+head(clust_prop[2,1:4],3)
+df <- mean(as.numeric(Cb9[,1:4]))
+df <- mean(as.data.frame.numeric(Cb9[,1:4]))
+df <- as.data.frame.numeric(Cb9[,1:4])
+df <- apply(Cb9[,1:4],1,function(x) mean(as.numeric(x)))
+Cb9$Cluster_Proportion <- df
+df <- apply(Cb9[,1:4],1,function(x) mean((x)))
+Cb9$Cluster_Proportion <- df
+boxplot(Cb9$Cluster_Proportion ~ Cb9$UTI_recurrence)
+library(ggplot2)
+library(reshape2)
+df <-melt(Cb9)
+View(df)
+df <-melt(Cb9,id.vars = c("Cluster_Proportion","Esc","Aer","UTI_recurrence"))
+df <-melt(Cb9,id.vars = c("Cluster_Proportion","Escherichia_Shigella","Aerococcus_urinae","UTI_recurrence"))
+ggplot(df,aes(UTI_recurrence,Cluster_Proportion))+geom_boxplot(aes(color=Escherichia_Shigella))
+ggplot(Cb9,aes(UTI_recurrence,Cluster_Proportion))+geom_boxplot(aes(color=Escherichia_Shigella))
+ggplot(df,aes(Escherichia_Shigella,Cluster_Proportion))+geom_boxplot(aes(color=UTI_recurrence))
+ggplot(df,aes(Escherichia_Shigella,Cluster_Proportion))+geom_boxplot(aes(fill=UTI_recurrence))
+ggplot(df,aes(Escherichia_Shigella,Cluster_Proportion))+geom_boxplot(aes(group=UTI_recurrence))
+ggplot(df,aes(Escherichia_Shigella,Cluster_Proportion))+geom_boxplot(aes(fill=UTI_recurrence),position=position_dodge(0.9))
+ggplot(Cb9,aes(Escherichia_Shigella,Cluster_Proportion))+geom_boxplot(aes(fill=UTI_recurrence),position=position_dodge(0.9))
+write.csv(Cb9, file="Cb9.csv")
+rm(df)
+View(Cb9)
+y9CLR <- Cb9
+y9CLR$Cluster_Proportion <- NULL
+y9CLR$UTI_recurrence2 <- NULL
+y9CLR$Class <- y9CLR$UTI_recurrence
+y9CLR$UTI_recurrence <- NULL
+y9CLR <- y9CLR[complete.cases(y9CLR$Class),]
+y9CLR$Class <- as.factor(y9CLR$Class)
+set.seed(159)
+inTrain3 <- createDataPartition(y=y9CLR$Class,p=.80,list=F)
+training3 <-y9CLR[ inTrain3,]
+testing3 <-y9CLR[ -inTrain3,]
+ctrl <- trainControl(method="repeatedcv",repeats = 3, classProbs = TRUE, summaryFunction = prSummary)
+plsFit <- train(Class ~ ., data=training3,method="pls",metric="ROC",tuneLength=15, trControl=ctrl)
+y9CLR <- Cb9
+> y9CLR$Cluster_Proportion <- NULL
+> y9CLR$UTI_recurrence2 <- NULL
+> y9CLR$Class <- y9CLR$UTI_recurrence
+> y9CLR$UTI_recurrence <- NULL
+> y9CLR <- y9CLR[complete.cases(y9CLR$Class),]
+y9CLR <- Cb9
+y9CLR$Cluster_Proportion <- NULL
+y9CLR$UTI_recurrence2 <- NULL
+y9CLR$Class <- y9CLR$UTI_recurrence
+y9CLR$UTI_recurrence <- NULL
+y9CLR <- y9CLR[complete.cases(y9CLR$Class),]
+y9CLR$Class <- gsub("4","recurrent",y9CLR$Class,fixed=T)
+y9CLR$Class <- gsub("3","recurrent",y9CLR$Class,fixed=T)
+y9CLR$Class <- gsub("2","5_9T",y9CLR$Class,fixed=T)
+y9CLR$Class <- gsub("1","1_4T",y9CLR$Class,fixed=T)
+y9CLR$Class <- gsub("0","none",y9CLR$Class,fixed=T)
+NROW(which(y9CLR$Class=="none"))
+NROW(which(y9CLR$Class=="recurrent"))
+set.seed(159)
+inTrain3 <- createDataPartition(y=y9CLR$Class,p=.80,list=F)
+training3 <-y9CLR[ inTrain3,]
+testing3 <-y9CLR[ -inTrain3,]
+ctrl <- trainControl(method="repeatedcv",repeats = 3, classProbs = TRUE, summaryFunction = prSummary)
+plsFit <- train(Class ~ ., data=training3,method="pls",metric="ROC",tuneLength=15, trControl=ctrl)
+y9CLR$Class <- gsub("1_4T","Lessthan5T",y9CLR$Class,fixed=T)
+y9CLR$Class <- gsub("5_9T","Lessthan10T",y9CLR$Class,fixed=T)
+set.seed(159)
+inTrain3 <- createDataPartition(y=y9CLR$Class,p=.80,list=F)
+training3 <-y9CLR[ inTrain3,]
+testing3 <-y9CLR[ -inTrain3,]
+ctrl <- trainControl(method="repeatedcv",repeats = 3, classProbs = TRUE, summaryFunction = prSummary)
+plsFit <- train(Class ~ ., data=training3,method="pls",metric="ROC",tuneLength=15, trControl=ctrl)
+set.seed(159)
+inTrain3 <- createDataPartition(y=y9CLR$Class,p=.80,list=F)
+training3 <-y9CLR[ inTrain3,]
+testing3 <-y9CLR[ -inTrain3,]
+ctrl <- trainControl(method="repeatedcv",repeats = 3, classProbs = TRUE, summaryFunction = multiClassSummary)
+plsFit <- train(Class ~ ., data=training3,method="pls",metric="ROC",tuneLength=15, trControl=ctrl)
+plsFit
+set.seed(159)
+inTrain3 <- createDataPartition(y=y9CLR$Class,p=.80,list=F)
+training3 <-y9CLR[ inTrain3,]
+testing3 <-y9CLR[ -inTrain3,]
+ctrl <- trainControl(method="repeatedcv",repeats = 3, classProbs = TRUE, summaryFunction = multiClassSummary)
+plsFit <- train(Class ~ ., data=y9CLR,method="pls",metric="ROC",tuneLength=15, trControl=ctrl)
+plsFit
+y9CLRi <- y9CLR
+y9CLRi$Aerococcus_urinae <- NULL
+set.seed(159)
+inTrain3 <- createDataPartition(y=y9CLRi$Class,p=.80,list=F)
+training3 <-y9CLR[ inTrain3,]
+testing3 <-y9CLR[ -inTrain3,]
+ctrl <- trainControl(method="repeatedcv",repeats = 3, classProbs = TRUE, summaryFunction = multiClassSummary)
+plsFit <- train(Class ~ ., data=training3,method="pls",metric="ROC",tuneLength=15, trControl=ctrl)
+plsFit
+x <- c("none","recurrent") ; y9CLRi <- y9CLR[which(y9CLR$Class%in%x),]
+set.seed(159)
+inTrain3 <- createDataPartition(y=y9CLRi$Class,p=.80,list=F)
+training3 <-y9CLRi[ inTrain3,]
+testing3 <-y9CLRi[ -inTrain3,]
+ctrl <- trainControl(method="repeatedcv",repeats = 3, classProbs = TRUE, summaryFunction = prSummary)
+plsFit <- train(Class ~ ., data=training3,method="pls",metric="ROC",tuneLength=15, trControl=ctrl)
+plsFit
+plsProbs <- predict(plsFit, newdata = testing3, type ="prob") ; head(plsProbs) ; plsClasses <- predict(plsFit, newdata = testing3)
+confusionMatrix(data = plsClasses, testing3$Class)
+plsProbs <- predict(plsFit, newdata = testing3, type ="prob") ; head(plsProbs) ; plsClasses <- predict(plsFit, newdata = testing3)
+confusionMatrix(data = plsClasses, as.factor(testing3$Class))
+y9CLRi$Aerococcus_urinae <- NULL
+y9CLRi$Class <- as.factor(y9CLRi$Class)
+set.seed(159)
+inTrain3 <- createDataPartition(y=y9CLRi$Class,p=.80,list=F)
+training3 <-y9CLRi[ inTrain3,]
+testing3 <-y9CLRi[ -inTrain3,]
+ctrl <- trainControl(method="repeatedcv",repeats = 3, classProbs = TRUE, summaryFunction = prSummary)
+plsFit <- train(Class ~ ., data=training3,method="pls",metric="ROC",tuneLength=15, trControl=ctrl)
+plsFit
+plsProbs <- predict(plsFit, newdata = testing3, type ="prob") ; head(plsProbs) ; plsClasses <- predict(plsFit, newdata = testing3)
+confusionMatrix(data = plsClasses, testing3$Class)
+cmon2 <- intersect(colnames(totuImp), y3)
+y3CLRut <- totuImp[,cmon2]
+cmon <- intersect(rownames(y3CLRut), rownames(UTI_subclass))
+y3CLRut <- y3CLRut[cmon,]
+UTI_subclass<-UTI_subclass[cmon,]
+y3CLRut$Class <- UTI_subclass$UTI_subclass
+y3CLRut <- y3CLRut[complete.cases(y3CLRut$Class),]
+cmon2 <- intersect(rownames(y3CLRut), rownames(y9CLRi))
+y3CLRut <- y3CLRut[cmon2,]
+y9CLRi <- y9CLRi[cmon2,]
+y3CLRut$Escherichia_Shigella <- y9CLRi$Escherichia_Shigella
+y3CLRut$Class <- as.factor(y3CLRut$Class)
+set.seed(159)
+inTrain3 <- createDataPartition(y=y3CLRut$Class,p=.80,list=F)
+training3 <-y3CLRut[ inTrain3,]
+testing3 <-y3CLRut[ -inTrain3,]
+ctrl <- trainControl(method="repeatedcv",repeats = 3, classProbs = TRUE, summaryFunction = prSummary)
+plsFit <- train(Class ~ ., data=training3,method="pls",metric="ROC",tuneLength=15, trControl=ctrl)
+plsFit
+plsProbs <- predict(plsFit, newdata = testing3, type ="prob") ; head(plsProbs) ; plsClasses <- predict(plsFit, newdata = testing3)
+confusionMatrix(data = plsClasses, testing3$Class)
+cmon2 <- intersect(colnames(totuImp), y6)
+y3CLRut <- totuImp[,cmon2]
+cmon <- intersect(rownames(y3CLRut), rownames(UTI_subclass))
+y3CLRut <- y3CLRut[cmon,]
+UTI_subclass<-UTI_subclass[cmon,]
+y3CLRut$Class <- UTI_subclass$UTI_subclass
+y3CLRut <- y3CLRut[complete.cases(y3CLRut$Class),]
+y3CLRut$Class <- as.factor(y3CLRut$Class)
+set.seed(159)
+inTrain3 <- createDataPartition(y=y3CLRut$Class,p=.80,list=F)
+training3 <-y3CLRut[ inTrain3,]
+testing3 <-y3CLRut[ -inTrain3,]
+ctrl <- trainControl(method="repeatedcv",repeats = 3, classProbs = TRUE, summaryFunction = prSummary)
+plsFit <- train(Class ~ ., data=training3,method="pls",metric="ROC",tuneLength=40, trControl=ctrl)
+warnings()
+plsProbs <- predict(plsFit, newdata = testing3, type ="prob") ; head(plsProbs) ; plsClasses <- predict(plsFit, newdata = testing3)
+confusionMatrix(data = plsClasses, testing3$Class)
+set.seed(159)
+inTrain3 <- createDataPartition(y=y3CLRut$Class,p=.80,list=F)
+training3 <-y3CLRut[ inTrain3,]
+testing3 <-y3CLRut[ -inTrain3,]
+ctrl <- trainControl(method="repeatedcv",repeats = 3, classProbs = TRUE, summaryFunction = prSummary)
+plsFit <- train(Class ~ ., data=training3,method="pls",metric="ROC",tuneLength=15, trControl=ctrl)
+plsProbs <- predict(plsFit, newdata = testing3, type ="prob") ; head(plsProbs) ; plsClasses <- predict(plsFit, newdata = testing3)
+confusionMatrix(data = plsClasses, testing3$Class)
+plsFit
+y9CLR2 <- Cb9
+y9CLR2$Cluster_Proportion <- NULL
+y9CLR2$UTI_recurrence2 <- NULL
+y9CLR2$Class <- y9CLR2$UTI_recurrence
+y9CLR2$UTI_recurrence <- NULL
+y9CLR2 <- y9CLR2[complete.cases(y9CLR2$Class),]
+set.seed(159)
+inTrain3 <- createDataPartition(y=y9CLR2$Class,p=.80,list=F)
+training3 <-y9CLR2[ inTrain3,]
+testing3 <-y9CLR2[ -inTrain3,]
+ctrl <- trainControl(method="repeatedcv",repeats = 3, summaryFunction = MAE)
+plsFit <- train(Class ~ ., data=training3,tuneLength=15, trControl=ctrl)
+plsClasses <- predict(plsFit, newdata = testing3)
+combo <- data.frame(testing3$Class, plsClasses)
+colnames(combo)<- c("Class","predClass")
+combo$absDiff <- abs(combo$Class - combo$predClass)
+mean(combo$absDiff)
+sd(combo$Class)
+set.seed(159)
+inTrain3 <- createDataPartition(y=y9CLR2$Class,p=.80,list=F)
+training3 <-y9CLR2[ inTrain3,]
+testing3 <-y9CLR2[ -inTrain3,]
+ctrl <- trainControl(method="repeatedcv",repeats = 3)
+plsFit <- train(Class ~ ., data=training3, trControl=ctrl)
+plsClasses <- predict(plsFit, newdata = testing3)
+combo <- data.frame(testing3$Class, plsClasses)
+colnames(combo)<- c("Class","predClass")
+combo$absDiff <- abs(combo$Class - combo$predClass)
+mean(combo$absDiff)
+sd(combo$Class)
+plsFit <- train(Class ~ ., data=training3)
+plsClasses <- predict(plsFit, newdata = testing3)
+combo <- data.frame(testing3$Class, plsClasses)
+colnames(combo)<- c("Class","predClass")
+combo$absDiff <- abs(combo$Class - combo$predClass)
+mean(combo$absDiff)
+sd(combo$Class)
+View(y9CLRi)
+y9CLRe <-y9CLRi
+y9CLRe[,1:4] <- NULL
+set.seed(159)
+inTrain3 <- createDataPartition(y=y9CLRe$Class,p=.80,list=F)
+training3 <-y9CLRe[ inTrain3,]
+testing3 <-y9CLRe[ -inTrain3,]
+ctrl <- trainControl(method="repeatedcv",repeats = 3, classProbs = TRUE, summaryFunction = prSummary)
+plsFit <- train(Class ~ ., data=training3,method="pls",metric="ROC",tuneLength=15, trControl=ctrl)
+set.seed(159)
+inTrain3 <- createDataPartition(y=y9CLRe$Class,p=.80,list=F)
+training3 <-y9CLRe[ inTrain3,]
+testing3 <-y9CLRe[ -inTrain3,]
+ctrl <- trainControl(method="repeatedcv",repeats = 3, summaryFunction = prSummary)
+plsFit <- train(Class ~ ., data=training3,method="pls",metric="ROC", trControl=ctrl)
+set.seed(159)
+inTrain3 <- createDataPartition(y=y9CLRe$Class,p=.80,list=F)
+training3 <-y9CLRe[ inTrain3,]
+testing3 <-y9CLRe[ -inTrain3,]
+ctrl <- trainControl(method="repeatedcv",repeats = 3,classProbs = T, summaryFunction = prSummary)
+plsFit <- train(Class ~ ., data=training3,method="pls",metric="ROC", trControl=ctrl)
+set.seed(159)
+inTrain3 <- createDataPartition(y=y9CLRe$Class,p=.80,list=F)
+training3 <-y9CLRe[ inTrain3,]
+testing3 <-y9CLRe[ -inTrain3,]
+ctrl <- trainControl(method="repeatedcv",repeats = 3, summaryFunction = prSummary)
+plsFit <- train(Class ~ ., data=training3,method="pls", trControl=ctrl)
+set.seed(159)
+inTrain3 <- createDataPartition(y=y9CLRe$Class,p=.80,list=F)
+training3 <-y9CLRe[ inTrain3,]
+testing3 <-y9CLRe[ -inTrain3,]
+ctrl <- trainControl(method="repeatedcv",repeats = 3, summaryFunction = prSummary)
+plsFit <- train(Class ~ ., data=training3, trControl=ctrl)
+y9CLRe<-as.numeric(y9CLRe)
+y9CLRe$Escherichia_Shigella<-as.numeric(y9CLRe$Escherichia_Shigella)
+set.seed(159)
+inTrain3 <- createDataPartition(y=y9CLRe$Class,p=.80,list=F)
+training3 <-y9CLRe[ inTrain3,]
+testing3 <-y9CLRe[ -inTrain3,]
+ctrl <- trainControl(method="repeatedcv",repeats = 3, summaryFunction = prSummary)
+plsFit <- train(Class ~ ., data=training3, trControl=ctrl)
+set.seed(159)
+inTrain3 <- createDataPartition(y=y9CLRe$Class,p=.80,list=F)
+training3 <-y9CLRe[ inTrain3,]
+testing3 <-y9CLRe[ -inTrain3,]
+ctrl <- trainControl(method="repeatedcv",repeats = 3)
+plsFit <- train(Class ~ ., data=training3, trControl=ctrl)
+warnings()
+y9CLRe <-y9CLRi
+y9_summ <- read.csv("Cb9_summ.csv",row.names = 1, check.names = F)
+View(y9_summ)
+df <- melt(y9_summ)
+View(df)
+ggplot(Cy9_summ,aes(Class,variable))+geom_pointrange(aes(ymin=MEAN-SD,ymax=MEAN+SD,color=Taxa),position=position_dodge(0.3))+scale_fill_manual(values=c("#00AFBB","#E7B800"))
+ggplot(df,aes(Class,variable))+geom_pointrange(aes(ymin=MEAN-SD,ymax=MEAN+SD,color=Taxa),position=position_dodge(0.3))+scale_fill_manual(values=c("#00AFBB","#E7B800"))
+ggplot(df,aes(Class,variable))+geom_boxplot(color=Taxa)+scale_fill_manual(values=c("#00AFBB","#E7B800"))
+ggplot(df,aes(Class,variable))+geom_boxplot(aes(color=Taxa))+scale_fill_manual(values=c("#00AFBB","#E7B800"))
+ggplot(y9_summ,aes(Class,MEAN))+geom_pointrange(aes(ymin=MEAN-SD,ymax=MEAN+SD,color=Taxa),position=position_dodge(0.3))+scale_fill_manual(values=c("#00AFBB","#E7B800"))
+y9_summ$Class <- gsub("RECURRENT_10T","recurrent_10T",y9_summ$Class,fixed=T)
+y9_summ$Class <- gsub("recurrent_10T","recurrent", y9_summ$Class,fixed=T)
+y9_summ$Class <- factor(y9_summ$Class, levels = c("none","1_4T","5_9T","recurrent"))
+ggplot(y9_summ,aes(Class,MEAN))+geom_pointrange(aes(ymin=MEAN-SD,ymax=MEAN+SD,color=Taxa),position=position_dodge(0.3))+scale_fill_manual(values=c("#00AFBB","#E7B800"))
+ggplot(y9_summ,aes(Class,MEAN))+geom_pointrange(aes(ymin=MEAN-SD,ymax=MEAN+SD,color=Taxa),position=position_dodge(0.7))+scale_fill_manual(values=c("#00AFBB","#E7B800"))
+ggplot(y9_summ,aes(Class,MEAN))+geom_pointrange(aes(ymin=MEAN-SD,ymax=MEAN+SD,color=Taxa),position=position_dodge(0.7))+scale_fill_manual(values=c("#00AFBB","#E7B800"))+theme(axis.text = element_text(size=11))
+ggplot(y9_summ,aes(Class,MEAN))+geom_pointrange(aes(ymin=MEAN-SD,ymax=MEAN+SD,color=Taxa),position=position_dodge(0.7))+scale_fill_manual(values=c("#00AFBB","#E7B800"))+theme(axis.text = element_text(size=13))
+df <- y9_summ
+df$SD <- NULL
+df <- melt(y9_summ)
+ggplot(df,aes(Class,variable))+geom_boxplot(aes(color=Taxa))
+ggplot(df,aes(Class,value))+geom_boxplot(aes(color=Taxa))
+write.csv(df,file="df2.csv")
+ggplot(df,aes(Class,value))+geom_boxplot(aes(color=Taxa),notch = T)
+ggplot(df,aes(Class,value))+geom_violin(aes(color=Taxa),trim=T)
+ggplot(df,aes(Class,value))+geom_violin(aes(color=Taxa),trim=F)
+library(ggpubr)
+install.packages("ggpubr")
+install.packages("ggpubr")
+library(ggpubr)
+ggplot(df,aes(Class,value))+geom_boxplot(aes(color=Taxa))+stat_compare_means(label="p.format")
+ggplot(df,aes(Class,value))+geom_boxplot(aes(color=Taxa))
+ggplot(df,aes(Class,value))+geom_boxplot(aes(color=Taxa))+theme(axis.text = element_text(size=13))
+df2 <- read.csv("df2.csv",row.names=1)
+df2$Class <- factor(df2$Class, levels = c("none","1_4T","5_9T","recurrent"))
+ggplot(df2,aes(Class,value))+geom_boxplot(aes(color=Taxa))+theme(axis.text = element_text(size=13))
+savehistory("abund24519.txt")

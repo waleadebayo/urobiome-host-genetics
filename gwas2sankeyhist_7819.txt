@@ -1,0 +1,273 @@
+load("gwas2.RData")
+urob <- read.delim("/Users/macuser/Desktop/urobHLI2.txt", header=F)
+urob <- read.delim("/Users/macuser/Desktop/GWAS/urobHLI2.txt", header=F)
+colnames(urob) <- c("FID","IID","COV1","COV2","COV3")
+rawBal <- read.csv("/Volumes/LATEST/gwas2/imp20residuals.csv", row.names = 1,check.names = F)
+rawBal<-t(rawBal)
+rawBal<-as.data.frame(rawBal)
+samBal <- read.csv("/Volumes/LATEST/Sampdat_balance.csv", row.names = 1)
+samBal <- read.csv( "/Users/macuser/Desktop/package/earlier/hociHEI.csv", row.names = 1)
+rownames(samBal)<-samBal$rname
+cmon<-intersect(rownames(samBal), rownames(rawBal))
+cmon<-intersect(rownames(samBal), rownames(rawBal))
+samBal<-samBal[cmon,]
+rawBal<-rawBal[cmon,]
+rawBal<-rawBal[cmon,]
+rownames(samBal)<-samBal$study_id
+rownames(rawBal)<-rownames(samBal)
+x<-urob$IID
+samBal<-samBal[which(rownames(samBal)%in%x),]
+samBal <- read.csv( "/Users/macuser/Desktop/package/earlier/hociHEI.csv", row.names = 1)
+rownames(samBal)<-samBal$rname
+cmon<-intersect(rownames(samBal), rownames(rawBal))
+samBal<-samBal[cmon,]
+rawBal<-rawBal[cmon,]
+rawBal <- read.csv("/Volumes/LATEST/gwas2/imp20residuals.csv", row.names = 1,check.names = F)
+rawBal<-t(rawBal)
+rawBal<-as.data.frame(rawBal)
+samBal <- read.csv( "/Users/macuser/Desktop/package/earlier/hociHEI.csv", row.names = 1)
+rownames(samBal)<-samBal$rname
+cmon<-intersect(rownames(samBal), rownames(rawBal))
+samBal<-samBal[cmon,]
+rawBal<-rawBal[cmon,]
+rownames(samBal)<-samBal$study_id
+rownames(rawBal)<-rownames(samBal)
+x<-urob$IID
+head(rownames(samBal))
+head(rownames(rawBal))
+x<-as.character(urob$IID)
+View(urob)
+urob <- read.delim("/Users/macuser/Desktop/GWAS/urobHLI2.txt", header=F)
+colnames(urob) <- c("IID","FID","COV1","COV2","COV3")
+rawBal <- read.csv("/Volumes/LATEST/gwas2/imp20residuals.csv", row.names = 1,check.names = F)
+rawBal<-t(rawBal)
+rawBal<-as.data.frame(rawBal)
+samBal <- read.csv( "/Users/macuser/Desktop/package/earlier/hociHEI.csv", row.names = 1)
+rownames(samBal)<-samBal$rname
+cmon<-intersect(rownames(samBal), rownames(rawBal))
+samBal<-samBal[cmon,]
+rawBal<-rawBal[cmon,]
+rownames(samBal)<-samBal$study_id
+rownames(rawBal)<-rownames(samBal)
+x<-urob$IID
+samBal<-samBal[which(rownames(samBal)%in%x),]
+rawBal<-rawBal[which(rownames(rawBal)%in%x),]
+cmon <- intersect(rownames(rawBal), rownames(samBal))
+rawBal <- rawBal[cmon,]
+samBal <- samBal[cmon,]
+######################
+resBal<-rawBal
+cmon <- intersect(rownames(resBal), rownames(samBal))
+resBal<-resBal[cmon,]
+samBal<-samBal[cmon,]
+resBal$scAge <- scale(samBal$ageyear_urine)
+resBal$scVFL <- scale(samBal$VFL_score)
+resBal$scMM <- scale(samBal$total_mmse)
+UROB<-urob
+rownames(UROB) <- UROB$IID
+cmon <- intersect(rownames(UROB), rownames(resBal))
+UROB <- UROB[cmon,]
+resBal<- resBal[cmon,]
+UROB <- cbind(UROB, resBal)
+write.table(UROB,file="/Users/macuser/Desktop/UROB6", sep= " " ,row.names = F)
+View(urob)
+rownames(UROB)<-UROB$FID
+write.table(UROB,file="/Users/macuser/Desktop/UROB6", sep= " " ,row.names = F)
+head(rownames(UROB))
+rownames(UROB)<-UROB$FID
+head(rownames(UROB))
+write.table(UROB,file="/Users/macuser/Desktop/UROB6", sep= " " ,row.names = F)
+head(rownames(UROB))
+UROB$SID<-UROB$IID
+UROB$IID<-NULL
+write.table(UROB,file="/Users/macuser/Desktop/UROB6", sep= " " ,row.names = F)
+UROB2<-UROB
+###
+UROB2<-UROB
+UROB2[,c(2,1,3:ncol(UROB2))]
+###
+UROB2<-UROB
+UROB2<-UROB2[,c(2,1,3:ncol(UROB2))]
+write.table(UROB2,file="/Users/macuser/Desktop/UROB7", sep= " " ,row.names = F)
+library(biomformat)
+ftab<-read_biom("/Volumes/LATEST/gwas2/feature-table.biom")
+ftab<-as.matrix(biom_data(ftab))
+head(rownames(ftab),2)
+head(colnames(ftab),2)
+ftab<-t(ftab)
+rawBal<-as.data.frame(ftab)
+cmon<-intersect(rownames(samBal), rownames(rawBal))
+rownames(samBal)<-samBal$rname
+cmon<-intersect(rownames(samBal), rownames(rawBal))
+samBal<-samBal[cmon,]
+rawBal<-rawBal[cmon,]
+head(samBal$extraction_robot,3)
+head(samBal$extractionkit_lot,3)
+head(samBal$runSeq,3)
+head(samBal$processing_robot,3)
+head(samBal$mastermix_lot,3)
+########if it is not residuals
+resBal <- rawBal
+for (i in 1:ncol(rawBal)){
+asv <- rawBal[,i]
+mod <- lm(asv ~ runSeq+extractionkit_lot+mastermix_lot+processing_robot+extraction_robot+primer_plate, data=samBal)
+resids=summary(mod)$residuals
+resBal[,i]=resids
+}
+cmon <- intersect(rownames(resBal), rownames(samBal))
+resBal<-resBal[cmon,]
+samBal<-samBal[cmon,]
+resBal$scAge <- scale(samBal$ageyear_urine)
+resBal$scVFL <- scale(samBal$VFL_score)
+resBal$scMM <- scale(samBal$total_mmse)
+resBal$scFI <- scale(samBal$newBCQFI)
+resBal$scUTI <- scale(samBal$utihis)
+UROB<-urob
+rownames(UROB) <- UROB$IID
+head(rownames(UROB))
+cmon <- intersect(rownames(UROB), rownames(resBal))
+rownames(resBal)<-samBal$study_id
+cmon <- intersect(rownames(UROB), rownames(resBal))
+UROB <- UROB[cmon,]
+resBal<- resBal[cmon,]
+UROB <- cbind(UROB, resBal)
+###this works
+UROB2<-UROB
+UROB2<-UROB2[,c(2,1,3:ncol(UROB2))]
+write.table(UROB2,file="/Users/macuser/Desktop/UROB7", sep= " " ,row.names = F)
+pheno <- read.delim("/Users/macuser/Desktop/GWAS/nGWASwtCovar/pheno",sep=" ", header=T)
+rownames(pheno)<-pheno$IID
+cmon <- intersect(rownames(pheno), rownames(resBal))
+pheno <- pheno[cmon,]
+resBal<- resBal[cmon,]
+pheno$scAge <- scale(resBal$scAge)
+pheno$scVFL <- scale(resBal$scVFL)
+pheno$scMM <- scale(resBal$scMM)
+pheno$scFI <- scale(resBal$scFI)
+cmon <- intersect(rownames(pheno), rownames(samBal))
+pheno<-pheno[cmon,]
+samBal<-samBal[cmon,]
+pheno$scAge <- scale(samBal$ageyear_urine)
+pheno$scVFL <- scale(samBal$VFL_score)
+pheno$scMM <- scale(samBal$total_mmse)
+pheno$scFI <- scale(samBal$newBCQFI)
+pheno$scUTI <- scale(samBal$utihis)
+pheno$scFI <- scale(sqrt(samBal$newBCQFI))
+pheno$scqVFL <- scale(samBal$scqVFL)
+pheno$scqMM <- scale(samBal$scqMMSE)
+pheno$scqFI <- scale((samBal$scqFI))
+###this works
+UROB2<-pheno
+UROB2<-UROB2[,c(2,1,3:ncol(UROB2))]
+write.table(UROB2,file="/Users/macuser/Desktop/UROB9", sep= " " ,row.names = F)
+View(UROB2)
+UROB2<-UROB2[,c(2,1,3:ncol(UROB2))]
+View(UROB2)
+write.table(UROB2,file="/Users/macuser/Desktop/UROB9", sep= " " ,row.names = F)
+################clinical measure
+pheno <- read.delim("/Users/macuser/Desktop/GWAS/nGWASwtCovar/pheno",sep=" ", header=T)
+rownames(pheno)<-pheno$IID
+cmon <- intersect(rownames(pheno), rownames(samBal))
+pheno<-pheno[cmon,]
+samBal<-samBal[cmon,]
+range(samBal$VFL_score)
+small<-samBal[complete.cases(samBal$VFL_score),]
+range(small$VFL_score)
+quantile(small$VFL_score,probs=c(0,0.1,0.25,0.5,0.75,0.99))
+quantile(small$VFL_score,probs=c(0,0.05,0.1,0.25,0.5,0.75,0.99))
+NROW(which(small$VFL_score=="1"))
+samBal <- read.csv( "/Users/macuser/Desktop/package/earlier/hociHEI.csv", row.names = 1)
+quantile(samBal$VFL_score,probs=c(0,0.1,0.25,0.5,0.75,0.99))
+small<-samBal[complete.cases(samBal$VFL_score),]
+quantile(small$VFL_score,probs=c(0,0.05,0.1,0.25,0.5,0.75,0.99))
+rownames(samBal)<-samBal$rname
+rownames(samBal)<-samBal$study_id
+################clinical measure
+pheno <- read.delim("/Users/macuser/Desktop/GWAS/nGWASwtCovar/pheno",sep=" ", header=T)
+rownames(pheno)<-pheno$IID
+cmon <- intersect(rownames(pheno), rownames(samBal))
+pheno<-pheno[cmon,]
+samBal<-samBal[cmon,]
+small<-samBal[complete.cases(samBal$total_mmse),]
+quantile(small$total_mmse,probs=c(0,0.05,0.1,0.25,0.5,0.75,0.99))
+samBal <- read.csv( "/Users/macuser/Desktop/package/earlier/hociHEI.csv", row.names = 1)
+small<-samBal[complete.cases(samBal$total_mmse),]
+quantile(small$total_mmse,probs=c(0,0.05,0.1,0.25,0.5,0.75,0.99))
+pheno <- read.delim("/Users/macuser/Desktop/GWAS/nGWASwtCovar/pheno",sep=" ", header=T)
+rownames(pheno)<-pheno$IID
+cmon <- intersect(rownames(pheno), rownames(samBal))
+pheno<-pheno[cmon,]
+samBal<-samBal[cmon,]
+cor.test(samBal$scqMMSE,pheno$Cb52)
+summary(lm(samBal$scqMMSE,pheno$Cb52))
+summary(lm(samBal$scqMMSE~pheno$Cb52))
+samBal <- read.csv( "/Users/macuser/Desktop/package/earlier/hociHEI.csv", row.names = 1)
+rawBal <- read.csv("/Volumes/LATEST/gwas2/imp20residuals.csv", row.names = 1,check.names = F)
+rawBal<-t(rawBal)
+rawBal<-as.data.frame(rawBal)
+samBal <- read.csv( "/Users/macuser/Desktop/package/earlier/hociHEI.csv", row.names = 1)
+rownames(samBal)<-samBal$rname
+rawBal <- read.csv("/Volumes/LATEST/gwas2/imp20residuals.csv", row.names = 1,check.names = F)
+rawBal<-t(rawBal)
+rawBal<-as.data.frame(rawBal)
+samBal <- read.csv( "/Users/macuser/Desktop/package/earlier/hociHEI.csv", row.names = 1)
+rownames(samBal)<-samBal$rname
+cmon<-intersect(rownames(samBal), rownames(rawBal))
+samBal<-samBal[cmon,]
+rawBal<-rawBal[cmon,]
+summary(lm(samBal$scqMMSE~rawBal$y33))
+library(devtools)
+install_github("Displayr/flipPlots")
+install.packages("webshot")
+Fig1sk<-read.csv("/Volumes/LATEST/Fig1sankey.csv",row.names = 1)
+library(flipPlots)
+SankeyDiagram(Fig1sk[, -c(7,8)],link.color = "Source",weights = Fig1sk$logInvFDR)
+#
+library(htmlwidgets)
+library(webshot)
+snk_node<-SankeyDiagram(Fig1sk[, -c(7,8)],link.color = "Source",weights = Fig1sk$logInvFDR)
+saveWidget(snk_node,'temp.html')
+webshot('temp.html',file='trySankey_colNode.pdf',vwidth = 491,vheight = 321)
+webshot::install_phantomjs()
+webshot('temp.html',file='trySankey_colNode.pdf',vwidth = 491,vheight = 321)
+webshot('temp.html',file='trySankey_colNode.pdf',vwidth = 1210,vheight = 920)
+SankeyDiagram(Fig1sk[, -c(7,8)],link.color = "Source",weights = Fig1sk$logInvFDR,label.show.varname = F)
+?SankeyDiagram
+SankeyDiagram(Fig1sk[, -c(7,8)],link.color = "Source",weights = Fig1sk$logInvFDR,label.show.varname = F,font.size = 8)
+Fig2sk<-Fig1sk
+Fig2sk$label<-as.factor(Fig2sk$label)
+SankeyDiagram(Fig2sk[, -c(7,8)],link.color = "Source",weights = Fig1sk$logInvFDR,label.show.varname = F,font.size = 8)
+snk2<-SankeyDiagram(Fig2sk[, -c(7,8)],link.color = "Source",weights = Fig1sk$logInvFDR,label.show.varname = F,font.size = 8)
+saveWidget(snk2,'temp2.html')
+webshot('temp2.html',file='trySankey_colNode2.pdf',vwidth = 1210,vheight = 920)
+Fig2sk<-read.csv("/Volumes/LATEST/Fig1sankey2.csv",row.names = 1)
+SankeyDiagram(Fig2sk[, -c(7,8)],link.color = "Source",weights = Fig1sk$logInvFDR,label.show.varname = F,font.size=10)
+Fig2sk$label<-as.factor(Fig2sk$label) ; Fig2sk$level0<-as.factor(Fig2sk$level0)
+SankeyDiagram(Fig2sk[, -c(7,8)],link.color = "Source",weights = Fig1sk$logInvFDR,label.show.varname = F,font.size=10)
+is.factor(Fig2sk$label)
+is.factor(Fig2sk$level0)
+SankeyDiagram(Fig2sk[, -c(7,8)],link.color = "Source",weights = Fig2sk$logInvFDR,label.show.varname = F,font.size=10)
+SankeyDiagram(Fig2sk[, -c(7,8)],link.color = "Source",weights = Fig2sk$logInvFDR,label.show.varname = F,font.size=10,max.categories = 50)
+Fig3sk<-read.csv("/Volumes/LATEST/Fig1sankey.csv",row.names = 1)
+snk3<-SankeyDiagram(Fig3sk[, -c(7,8)],link.color = "Source",weights = Fig3sk$logInvFDR,label.show.varname = F,font.size=10,max.categories = 50)
+saveWidget(snk3,'temp3.html')
+webshot('temp3.html',file='Fig1Sankey_uro.pdf',vwidth = 1210,vheight = 920)
+Fig3sk<-read.csv("/Volumes/LATEST/Fig1sankey.csv",row.names = 1)
+snk3<-SankeyDiagram(Fig3sk[, -c(7,8)],link.color = "Source",weights = Fig3sk$logInvFDR,label.show.varname = F,font.size=15,max.categories = 50)
+saveWidget(snk3,'temp3.html')
+webshot('temp3.html',file='Fig1Sankey_uro.pdf',vwidth = 1210,vheight = 920)
+snk2<-SankeyDiagram(Fig2sk[, -c(7,8)],link.color = "Source",weights = Fig2sk$logInvFDR,label.show.varname = F,font.size=10,max.categories = 50)
+saveWidget(snk2,'temp2.html')
+webshot('temp2.html',file='trySankey_colNode2.pdf',vwidth = 1210,vheight = 920)
+snk2<-SankeyDiagram(Fig2sk[, -c(7,8)],link.color = "Source",weights = Fig2sk$logInvFDR,label.show.varname = F,font.size=15,max.categories = 50)
+saveWidget(snk2,'temp2.html')
+webshot('temp2.html',file='trySankey_colNode2.pdf',vwidth = 1510,vheight = 1250)
+webshot('temp2.html',file='trySankey_colNode2.pdf',vwidth = 1000,vheight = 1250)
+Fig4sk<-read.csv("/Volumes/LATEST/Fig1sankey4.csv",row.names = 1); snk4<-SankeyDiagram(Fig4sk[, -c(6,7)],link.color = "Source",weights = Fig4sk$logInvFDR,label.show.varname = F,font.size=15,max.categories = 50)
+saveWidget(snk4,'temp4.html')
+webshot('temp4.html',file='trySankey4.pdf',vwidth = 1000,vheight = 1250)
+webshot('temp4.html',file='trySankey4_2.pdf',vwidth = 1200,vheight = 1050)
+webshot('temp4.html',file='trySankey4_2.pdf',vwidth = 1500,vheight = 2100)
+webshot('temp4.html',file='trySankey4_2.pdf',vwidth = 2100,vheight = 1500)
+webshot('temp4.html',file='trySankey4_2.pdf',vwidth = 2100,vheight = 1000)
+savehistory("gwas2sankeyhist_7819.txt")
