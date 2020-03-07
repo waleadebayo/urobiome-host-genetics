@@ -41,7 +41,7 @@ sample19 <- rbind(sample19,s11)
 sample20 <- rbind(sample20,s11)
 
 indices=rownames(sample1)
-foo <- function(data, indices){
+fsplt <- function(data, indices){
  dt<-data[indices,]
  c(kruskal.test(dt[,"PC2"] ~ as.factor(dt[,"ancestry"]))$p.value
  )
@@ -49,36 +49,36 @@ foo <- function(data, indices){
  library(boot)
  
 set.seed(1659);
- myBootsrap <- boot(s1,foo,R=100)
-myBootsrap$t
-myBootsrap$t0
+ myBootstrap <- boot(s1,fsplt,R=100)
+myBootstrap$t
+myBootstrap$t0
 plot(myBootsrap)
 boot.ci(myBootsrap,type="basic")
 tableOfIndices<-boot.array(myBootstrap, indices=T)
 
-set.seed(1659); myBootsrap <- boot(sample1,foo,R=10)
+set.seed(1659); myBootsrap <- boot(sample1,fsplt,R=10)
 
 
 
 
-set.seed(1659);boot.ci(boot(sample11,foo,R=1000),type="perc") 
-set.seed(1659); boot.ci(boot(sample12,foo,R=1000),type="perc")
-set.seed(1659); boot.ci(boot(sample13,foo,R=1000),type="perc")
-set.seed(1659); boot.ci(boot(sample14,foo,R=1000),type="perc")
-set.seed(1659); boot.ci(boot(sample15,foo,R=1000),type="perc")
-set.seed(1659); boot.ci(boot(sample16,foo,R=1000),type="perc")
-set.seed(1659); boot.ci(boot(sample17,foo,R=1000),type="perc")
-set.seed(1659); boot.ci(boot(sample18,foo,R=1000),type="perc")
-set.seed(1659); boot.ci(boot(sample19,foo,R=1000),type="perc")
-set.seed(1659); boot.ci(boot(sample20,foo,R=1000),type="perc")
+set.seed(1659);boot.ci(boot(sample11,fsplt,R=1000),type="perc") 
+set.seed(1659); boot.ci(boot(sample12,fsplt,R=1000),type="perc")
+set.seed(1659); boot.ci(boot(sample13,fsplt,R=1000),type="perc")
+set.seed(1659); boot.ci(boot(sample14,fsplt,R=1000),type="perc")
+set.seed(1659); boot.ci(boot(sample15,fsplt,R=1000),type="perc")
+set.seed(1659); boot.ci(boot(sample16,fsplt,R=1000),type="perc")
+set.seed(1659); boot.ci(boot(sample17,fsplt,R=1000),type="perc")
+set.seed(1659); boot.ci(boot(sample18,fsplt,R=1000),type="perc")
+set.seed(1659); boot.ci(boot(sample19,fsplt,R=1000),type="perc")
+set.seed(1659); boot.ci(boot(sample20,fsplt,R=1000),type="perc")
 
-set.seed(1659); mean(boot(sample11,foo,R=1000)$t)
-set.seed(1659); mean(boot(sample12,foo,R=1000)$t)
-set.seed(1659); mean(boot(sample13,foo,R=1000)$t)
-set.seed(1659); mean(boot(sample14,foo,R=1000)$t)
-set.seed(1659); mean(boot(sample15,foo,R=1000)$t)
-set.seed(1659); mean(boot(sample16,foo,R=1000)$t)
-set.seed(1659); mean(boot(sample17,foo,R=1000)$t)
-set.seed(1659); mean(boot(sample18,foo,R=1000)$t)
+set.seed(1659); mean(boot(sample11,fsplt,R=1000)$t)
+set.seed(1659); mean(boot(sample12,fsplt,R=1000)$t)
+set.seed(1659); mean(boot(sample13,fsplt,R=1000)$t)
+set.seed(1659); mean(boot(sample14,fsplt,R=1000)$t)
+set.seed(1659); mean(boot(sample15,fsplt,R=1000)$t)
+set.seed(1659); mean(boot(sample16,fsplt,R=1000)$t)
+set.seed(1659); mean(boot(sample17,fsplt,R=1000)$t)
+set.seed(1659); mean(boot(sample18,fsplt,R=1000)$t)
 set.seed(1659); mean(boot(sample19,foo,R=1000)$t)
-set.seed(1659); mean(boot(sample20,foo,R=1000)$t)
+set.seed(1659); mean(boot(sample20,fsplt,R=1000)$t)
