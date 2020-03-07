@@ -10,7 +10,7 @@ All scripts utilise packages available from CRAN, Bioconductor, github, biobaker
 
 Scripts are arranged to match figure arrangement in the cited paper
 
-1. Comparison of microbiome at different sites and in paired urine/gut samples (link to page)
+1. Comparison of microbiome at different sites and in paired urine/gut samples [here](https://github.com/waleadebayo/urobiome-host-genetics/tree/Comparison-of-body-sites)
 
 2. Significant Influence of host genetics on urine microbes [here](https://github.com/waleadebayo/urobiome-host-genetics/tree/host-genetic-and-environment-factors)
 
