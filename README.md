@@ -12,6 +12,6 @@ Scripts are arranged to match figure arrangement in the cited paper
 
 1. Comparison of microbiome at different sites and in paired urine/gut samples (link to page)
 
-2. Significant Influence of host genetics on urine microbes (link to page)
+2. Significant Influence of host genetics on urine microbes [here](https://github.com/waleadebayo/urobiome-host-genetics/tree/host-genetic-and-environment-factors)
 
 3. Average contribution of factors [here](https://github.com/waleadebayo/urobiome-host-genetics/blob/Average-contribution-of-factors/contribution%20to%20variance)
