@@ -1,1 +1,94 @@
+#####extract individuals with available genome data, microbiome data, and and all 7 variables
+######how kinship was calculated from genome data is available here (link)
+####import genetic kinship data
+### import metadata (for those with reliable detection)
+kID2<- read.csv("/Volumes/LATEST/kinship/allKin3.csv", row.names=1)
+load("/Users/macuser/Documents/uromg/Variance/hoci2k.RData")
+hoci2k$rname<-rownames(hoci2k)
+rownames(hoci2k)<-hoci2k$study_id
+pckin<-read.csv("/Volumes/LATEST/kinship/PCdistKinAdd.csv",row.names = 1)
 
+##match and sort IDs
+cmon<-intersect(rownames(kID2),rownames(pckin))
+kID2<-kID2[cmon,]
+pckin<-pckin[cmon,]
+pckin2<-pckin
+rownames(pckin2)<-kID2$study_id2
+kid3<-kID2
+rownames(kid3)<-kid3$study_id2
+cmon2<-intersect(rownames(kid3),rownames(hoci2k))
+hoci2k<-hoci2k[cmon2,]
+kid3<-kid3[cmon2,]
+####use PCs of genetic kinship
+cmon3<-intersect(rownames(hoci2k), rownames(pckin2))
+hoci2k<-hoci2k[cmon3,]
+pckin3<-pckin2[cmon3,]
+hoci2k$genetickinPC1<-pckin3$PC1
+hoci2k$genetickinPC2<-pckin3$PC2
+#####pick subsets where other variables are present
+compAll<- hoci2k[complete.cases(hoci2k$meno_stat),]
+compAll<- compAll[complete.cases(compAll$utihis),]
+compAll<- compAll[complete.cases(compAll$scqFI),]
+compAll<- compAll[complete.cases(compAll$HEI),]
+compAll<- compAll[complete.cases(compAll$antib),]
+compAll<- compAll[complete.cases(compAll$nBirths),]
+###import microbiome data
+load("/Users/macuser/Documents/uromg/Variance/mgd2t_f2RR.RData")
+##
+library(vegan); library(phyloseq)
+rownames(compAll)<-compAll$rname
+bdivUH<-prune_samples(rownames(compAll),mgd2t_f2)
+bdivUHd <-distance(bdivUH,method="bray")
+hoci2kP<-sample_data(bdivUH)
+hoci2kP<-as.data.frame(hoci2kP)
+cmon<-intersect(rownames(hoci2kP), rownames(compAll))
+compAll<-compAll[cmon,]
+set.seed(1659);adonis2(bdivUHd~genetickinPC1+scAge+scUTI+scale(nBirths)+antib_use+scale(HEI)+scqFI+runSeq+reads_filt+extractionkit_lot+mastermix_lot+processing_robot+extraction_robot,data=compAll)
+
+set.seed(1659);pem1<-adonis2(bdivUHd~genetickinPC1+scAge+scUTI+scale(nBirths)+antib_use+scale(HEI)+scqFI+runSeq+reads_filt+extractionkit_lot+mastermix_lot+processing_robot+extraction_robot,data=compAll)
+
+###reorder all variables to remove bias in models
+set.seed(1659);pem1<-adonis2(bdivUHd~genetickinPC1+scAge+scUTI+scale(nBirths)+antib_use+scale(HEI)+meno_stat+scqFI+runSeq+reads_filt+primer_plate+extractionkit_lot+mastermix_lot+processing_robot+extraction_robot,data=compAll)
+set.seed(1659);pem2<-adonis2(bdivUHd~genetickinPC1+scAge+scUTI+scale(nBirths)+antib_use+scale(HEI)+meno_stat+scqFI+runSeq+reads_filt+primer_plate+extractionkit_lot+mastermix_lot+processing_robot+extraction_robot,data=compAll)
+set.seed(1659);pem3<-adonis2(bdivUHd~scAge+genetickinPC1+scUTI+scale(nBirths)+antib_use+scale(HEI)+meno_stat+scqFI+primer_plate+extractionkit_lot+mastermix_lot+processing_robot+extraction_robot+reads_filt+runSeq,data=compAll)
+set.seed(1659);pem4<-adonis2(bdivUHd~scAge+scUTI+genetickinPC1+scale(nBirths)+antib_use+scale(HEI)+meno_stat+scqFI+primer_plate+extractionkit_lot+mastermix_lot+processing_robot+extraction_robot+reads_filt+runSeq,data=compAll)
+set.seed(1659);pem6<-adonis2(bdivUHd~scAge+scUTI+scale(nBirths)+antib_use+scale(HEI)+meno_stat+scqFI+genetickinPC1+extractionkit_lot+extraction_robot+primer_plate+mastermix_lot+processing_robot+reads_filt+runSeq,data=compAll)
+set.seed(1659);pem5<-adonis2(bdivUHd~scAge+scUTI+scale(nBirths)+antib_use+scale(HEI)+meno_stat+scqFI+genetickinPC1+primer_plate+extractionkit_lot+mastermix_lot+processing_robot+extraction_robot+reads_filt+runSeq,data=compAll)
+set.seed(1659);pem7<-adonis2(bdivUHd~scUTI+scAge+meno_stat+antib_use+scale(nBirths)+scale(HEI)+scqFI+genetickinPC1+extractionkit_lot+extraction_robot+primer_plate+mastermix_lot+processing_robot+reads_filt+runSeq,data=compAll)
+set.seed(1659);pem8<-adonis2(bdivUHd~scAge+scUTI+meno_stat+scale(nBirths)+scale(HEI)+scqFI+genetickinPC1+antib_use+extractionkit_lot+extraction_robot+primer_plate+mastermix_lot+processing_robot+reads_filt+runSeq,data=compAll)
+ set.seed(1659);pem9<-adonis2(bdivUHd~scAge+scUTI+meno_stat+scale(nBirths)+genetickinPC1+scale(HEI)+scqFI+antib_use+extractionkit_lot+extraction_robot+primer_plate+mastermix_lot+processing_robot+reads_filt+runSeq,data=compAll)
+ set.seed(1659);pem9<-adonis2(bdivUHd~meno_stat+scale(nBirths)+genetickinPC1+scUTI+scale(HEI)+scqFI+antib_use+scAge+extractionkit_lot+extraction_robot+primer_plate+mastermix_lot+processing_robot+reads_filt+runSeq,data=compAll)
+ set.seed(1659);pem10<-adonis2(bdivUHd~meno_stat+scale(nBirths)+genetickinPC1+scUTI+scale(HEI)+scqFI+antib_use+scAge+extractionkit_lot+extraction_robot+primer_plate+mastermix_lot+processing_robot+reads_filt+runSeq,data=compAll)
+ set.seed(1659);pem11<-adonis2(bdivUHd~meno_stat+genetickinPC1+scale(nBirths)+scUTI+scale(HEI)+scqFI+antib_use+scAge+extractionkit_lot+extraction_robot+primer_plate+mastermix_lot+processing_robot+reads_filt+runSeq,data=compAll)
+ set.seed(1659);pem12<-adonis2(bdivUHd~meno_stat+scqFI+scale(nBirths)+genetickinPC1+scUTI+scale(HEI)+antib_use+scAge+extractionkit_lot+extraction_robot+primer_plate+mastermix_lot+processing_robot+reads_filt+runSeq,data=compAll)
+ set.seed(1659);pem13<-adonis2(bdivUHd~meno_stat+scqFI+scale(nBirths)+scUTI+scale(HEI)+antib_use+scAge+extractionkit_lot+extraction_robot+runSeq+genetickinPC1+primer_plate+mastermix_lot+processing_robot+reads_filt,data=compAll)
+ set.seed(1659);pem14<-adonis2(bdivUHd~meno_stat+scqFI+scale(nBirths)+scUTI+scale(HEI)+antib_use+scAge+extractionkit_lot+extraction_robot+runSeq+genetickinPC1+primer_plate+mastermix_lot+processing_robot+reads_filt,data=compAll)
+ set.seed(1659);pem15<-adonis2(bdivUHd~scAge+scqFI+scUTI+antib_use+meno_stat+scale(nBirths)+scale(HEI)+genetickinPC1+extractionkit_lot+extraction_robot+runSeq+primer_plate+mastermix_lot+processing_robot+reads_filt,data=compAll)
+ set.seed(1659);pem16<-adonis2(bdivUHd~scAge+genetickinPC1+scqFI+scUTI+antib_use+meno_stat+scale(nBirths)+scale(HEI)+extractionkit_lot+extraction_robot+runSeq+primer_plate+mastermix_lot+processing_robot+reads_filt,data=compAll)
+ set.seed(1659);pem17<-adonis2(bdivUHd~scAge+scqFI+scUTI+antib_use+meno_stat+scale(nBirths)+scale(HEI)+genetickinPC1+extractionkit_lot+extraction_robot+primer_plate+mastermix_lot+processing_robot+reads_filt+runSeq,data=compAll)
+ set.seed(1659);pem18<-adonis2(bdivUHd~scale(nBirths)+scale(HEI)+scAge+scqFI+antib_use+meno_stat+scUTI+genetickinPC1+extractionkit_lot+extraction_robot+primer_plate+mastermix_lot+processing_robot+reads_filt+runSeq,data=compAll)
+set.seed(1659);pem19<-adonis2(bdivUHd~scale(nBirths)+scale(HEI)+scAge+scqFI+antib_use+meno_stat+genetickinPC1+scUTI+extractionkit_lot+extraction_robot+primer_plate+mastermix_lot+processing_robot+reads_filt+runSeq,data=compAll)
+ set.seed(1659);pem20<-adonis2(bdivUHd~antib_use+scale(nBirths)+genetickinPC1+scale(HEI)+scAge+scqFI+meno_stat+scUTI+extraction_robot+extractionkit_lot+primer_plate+processing_robot+reads_filt+mastermix_lot+runSeq,data=compAll)
+set.seed(1659);pem21<-adonis2(bdivUHd~genetickinPC1+scale(nBirths)+scale(HEI)+scqFI+scUTI+scAge+antib_use+meno_stat+extraction_robot+extractionkit_lot+primer_plate+processing_robot+reads_filt+mastermix_lot+runSeq,data=compAll)
+ pem <- rbind(pem1,pem2,pem3,pem4,pem5,pem6,pem7,pem8,pem9,pem10,pem11,pem12,pem13,pem14,pem15,pem16,pem17,pem18,pem19,pem20,pem21)
+ save(bdivUHd,file="pemBray545D.RData")
+ save(compAll,file="pemBray545S.RData")
+ 
+#########repeat for unifrac and atchinson
+
+###plot
+load("pemMBray545.RData")
+pem<-pem[c(1:12),]
+sum(pem$R2)
+pem$percentage_contribution<-(pem$R2 / 0.10375365)
+pemM$names<-rownames(pem)
+
+pem$names<-reorder(pem$names, pem$R2)
+pemM<-read.csv("pemM.csv",row.names = 1)
+library(lattice) ; library(ggp
+pemM$names<-reorder(pemM$names, pemM$R2)
+pemM$percentage_contribution <- (pemM$percentage_contribution*100)
+barchart(pemM$percentage_contribution~pemM$names, data=pemM,ylab="Contribution to variance (R2=10.3%)",xlab="urinary microbiome factors",scales=list(x=list(rot=35))
+#other distances
+#barchart(pem$percentage_contribution~pem$names, data=pem,ylab="Contribution to variance(R2=0.11)",xlab="urinary microbiome factors",scales=list(x=list(rot=35)),main="microbiome variation(n=302)")
+#barchart(pem$percentage_contribution~pem$names, data=pem,ylab="Contribution to variance(R2=0.11)",xlab="urinary microbiome factors",scales=list(x=list(rot=35)))
