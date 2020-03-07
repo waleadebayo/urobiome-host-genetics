@@ -1,24 +1,27 @@
-##########new_herit
+##########heritability scripts
+####import ASV table
 totuImp <-read.csv("totuImp.csv", row.names = 1, check.names = F)
 totuImp <- t(totuImp)
 dim(totuImp)
-
 totuImp <- data.frame(totuImp, check.names = F)
+####match  and sort microbiome data ID, sort with paired twins in the dataset (the twin of some individual were nt available)
 cmon <- intersect(rownames(twins),rownames(totuImp))
 twins<-twins[cmon,]
 totuImp<-totuImp[cmon,]
 identical(rownames(totuImp),rownames(totuImp))
  cmon2 <- intersect(colnames(totuImp), rownames(tax_nv))
  totuImp <- totuImp[,which(colnames(totuImp)%in%cmon2)]
+ #####transform data
  ASV20clr = (totuImp + 1)
  library(compositions)
  ASV20clr = clr(ASV20clr)
  ASV20clr = as.data.frame.rmult(ASV20clr, check.names=F)
  detach("package:compositions", unload = TRUE)
  detach("package:tensorA", unload = TRUE)
+ library(car): library(mets)
  clrb <- ASV20clr
  clrbresids <- ASV20clr
- 
+ #####loop over models and run analyses
  for(i in 1:ncol(clrb)){
      asv <- clrb[,i]
      #use clr only later u can use bcnpower with clr
@@ -51,9 +54,7 @@ tax_herit$E_Estimate <- dft$E_Estimate
  View(tax_herit)
 write.csv(tax_herit, file="/Users/adewaleadebayo/Desktop/new_herit.csv")
 
-
-
-###########newclusterherit
+###########repeat for clusters of core urobiome
 rm(residImp20, ace, twins2,dft,twinwide,asv.table2)
 residImp20 <-read.csv("/Users/adewaleadebayo/Desktop/exported_demux/Imp/imp20/Paird/core/Paird_residuals.csv",row.names=1, check.names=F)
 residImp20 <- t(residImp20)
@@ -82,48 +83,3 @@ dft <- data.frame(ace, row.names = c("A_Estimate", "C_Estimate", "E_Estimate","A
  dft <- t(dft)
  dft <- data.frame(dft,check.names=F)
  View(dft)
-
-
-
-
-##########
-totuImp <-read.csv("totuImp.csv", row.names = 1, check.names = F)
- totuImp <- t(totuImp)
- dim(totuImp)
-
- totuImp <- data.frame(totuImp, check.names = F)
- 
- cmon2 <- intersect(colnames(totuImp), rownames(tax_nv))
- totuImp <- totuImp[,which(colnames(totuImp)%in%cmon2)]
- ASV20clr = (totuImp + 1)
- library(compositions)
- ASV20clr = clr(ASV20clr)
- ASV20clr = as.data.frame.rmult(ASV20clr, check.names=F)
- detach("package:compositions", unload = TRUE)
- detach("package:tensorA", unload = TRUE)
- 
- cmon <- intersect(rownames(twins),rownames(ASV20clr))
- twins2<-twins[cmon,]
- ASV20clr<-ASV20clr[cmon,]
- identical(rownames(twins2),rownames(ASV20clr))
-
-all.equal(rownames(twins2),rownames(ASV20clr))
- head(twins2$fam_id, 10)
- clrb <- ASV20clr
- clrbresids <- ASV20clr
- for(i in 1:ncol(clrb)){
-     asv <- clrb[,i]
-     #use clr only later u can use bcnpower with clr
-     mod <- lm(asv~runSeq + reads_filt+extractionkit_lot + mastermix_lot + extraction_robot + processing_robot, data=twins2)
-     resids=summary(mod)$residuals
-     #overwrite the column with residuals
-     clrbresids[,i]=resids
- }
- asv.table2 <- data.frame(clrbresids, check.names=F)
- ace <- apply(asv.table2, 2, function(x) {mod1 <- twinlm(x ~ 1, data=twins2, DZ="DZ", zyg="Zygosity", id="fam_id")
-+ coefs <- summary(mod1)$coef
-+ return(coefs)
-+ })
-Warning messages:
-1: In sqrt(diag(e$vcov)) : NaNs produced
-2: In sqrt(diag(e$vcov)) : NaNs produced
