@@ -55,7 +55,6 @@ tax_herit$E_Estimate <- dft$E_Estimate
 write.csv(tax_herit, file="/Users/adewaleadebayo/Desktop/new_herit.csv")
 
 ###########repeat for clusters of core urobiome
-rm(residImp20, ace, twins2,dft,twinwide,asv.table2)
 residImp20 <-read.csv("/Users/adewaleadebayo/Desktop/exported_demux/Imp/imp20/Paird/core/Paird_residuals.csv",row.names=1, check.names=F)
 residImp20 <- t(residImp20)
 residImp20 <- data.frame(residImp20, check.names = F)
