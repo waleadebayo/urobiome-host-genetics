@@ -14,4 +14,4 @@ Scripts are arranged to match figure arrangement in the cited paper
 
 2. Significant Influence of host genetics on urine microbes (link to page)
 
-3. Average contribution of factors [here] (https://github.com/waleadebayo/urobiome-host-genetics/blob/Average-contribution-of-factors/contribution%20to%20variance)
+3. Average contribution of factors [here](https://github.com/waleadebayo/urobiome-host-genetics/blob/Average-contribution-of-factors/contribution%20to%20variance)
